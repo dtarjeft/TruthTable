@@ -70,6 +70,7 @@ namespace Lab02
             from negative in Parse.Char('!').Optional()
             from expression in Parse.Ref(() => ExpressionParser.Contained(Parse.Char('('), Parse.Char(')')))
             select negative.IsDefined ? !expression : expression;
+
         private static readonly Parser<Func<bool, bool, bool>> And =
             Parse.String("and").Return<IEnumerable<char>, Func<bool, bool, bool>>((a, b) => a && b);
         private static readonly Parser<Func<bool, bool, bool>> Or = 
@@ -80,11 +81,11 @@ namespace Lab02
             from letter in Parse.Letter
             select (negative.IsDefined ? !Table[RowToLookUp, letter - 'A'] : Table[RowToLookUp, letter - 'A']);
 
-        private static readonly Parser<Func<bool, bool, bool>> AndAndOrParser = 
+        private static readonly Parser<Func<bool, bool, bool>> Operations = 
             And.Or(Or);
 
-        private static readonly Parser<bool> ExpressionParser = Parse.ChainOperator(AndAndOrParser,
-            BoolParser.Or(Parenthetical), (op, arg1, arg2) => op(arg1, arg2));
+        private static readonly Parser<bool> ExpressionParser = Parse.ChainOperator(Operations,
+            Parenthetical.Or(BoolParser), (op, arg1, arg2) => op(arg1, arg2));
          
 
 

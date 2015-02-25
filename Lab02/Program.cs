@@ -14,13 +14,12 @@ namespace Lab02
             truthTable.EvaluateExpression("(A and C) and (B and !C)");
             truthTable.EvaluateExpression("(A or B) and !(B or C)");
             truthTable.EvaluateExpression("(A or (B and C)) and (!A and !B)");
-            truthTable.EvaluateExpression("(B and C) or (C and A)) and (!(A or B) and C)");
+            truthTable.EvaluateExpression("((B and C) or (C and A)) and (!(A or B) and C))");
             truthTable.EvaluateExpression("A or !(B and C)");
         }
 
-        static void Main()
+        private static void TestSets()
         {
-            //TestTruthTable(new TruthTable(3));
             SetParser.Sets = new List<Set>
             {
                 new Set(new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}),
@@ -44,12 +43,20 @@ namespace Lab02
             for (var i = 0; i < SetParser.Sets.Count; i++)
             {
                 var set = SetParser.Sets[i];
-                Console.WriteLine((char)(i+'A')+ ": " +set.ToString());
+                Console.WriteLine((char) (i + 'A') + ": " + set.ToString());
             }
             foreach (var problem in problems)
             {
                 Console.WriteLine(problem + ": " + SetParser.ParseProblem(problem));
             }
+        }
+        static void Main()
+        {
+            TestTruthTable(new TruthTable(3));
+
+            Console.WriteLine("\n\n---LAB03 BEGINS---\n");
+            TestSets();
+
         }
     }
 }
